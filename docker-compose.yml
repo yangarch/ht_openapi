@@ -1,0 +1,11 @@
+version: '2'
+services:
+  openapi.yangarch.net:
+    container_name: openapi.yangarch.net
+    volumes:
+      - ./app:/app
+    ports:
+      - "21080:80"
+    build: .
+    environment:
+      CREDENTIAL_PATH: /credentials
