@@ -5,7 +5,7 @@ services:
     volumes:
       - ./app:/app
     ports:
-      - "21080:80"
+      - "19080:80"
     build: .
     environment:
       CREDENTIAL_PATH: /credentials
