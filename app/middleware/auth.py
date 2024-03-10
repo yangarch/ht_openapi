@@ -35,7 +35,7 @@ async def renew_accees_token(data):
     access_token = data.get("access_token_token", "")
     access_token_token_expired = data.get("access_token_token_expired", "")
 
-    url = "https://openapi.koreainvestment.com:9443"
+    url = "https://openapi.koreainvestment.com:9443/oauth2/tokenP"
     body = {"grant_type": "", "appkey": appkey, "appsecret": appsecret}
 
     async with aiohttp.ClientSession() as session:
