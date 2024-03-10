@@ -1,3 +1,4 @@
+import aiofiles
 import json
 from datetime import datetime
 
@@ -12,8 +13,9 @@ async def get_access_token(request: Request, user_name=None):
     """
     # JSON 파일을 열고 읽기
     file_path = f"/credentials/{user_name}.json"  # JSON 파일 경로
-    with open(file_path, "r", encoding="utf-8") as file:
-        data = json.load(file)
+    async with aiofiles.open(file_path, mode="r", encoding="utf-8") as file:
+        data = await file.read()
+        data = json.loads(data)
 
     acess_token_token_expired = data.get("acess_token_token_expired", "")
     current_time = datetime.now()
@@ -22,7 +24,7 @@ async def get_access_token(request: Request, user_name=None):
         expired_time = datetime.strptime(acess_token_token_expired, "%Y-%m-%d %H:%M:%S")
 
     if expired_time < current_time or acess_token_token_expired == "":
-        renew_accees_token(data)
+        await renew_accees_token(data)
 
 
 async def renew_accees_token(data):
@@ -40,22 +42,18 @@ async def renew_accees_token(data):
             result = await res.json()
             access_token = result.get("access_token", "")
             access_token_token_expired = result.get("access_token_token_expired", "")
+
     data["access_token"] = access_token
     data["access_token_token_expired"] = access_token_token_expired
 
     # JSON 데이터를 새 파일로 덮어쓰기
     file_path = f"/credentials/{user_name}.json"  # 파일 경로 지정
-    with open(file_path, "w", encoding="utf-8") as file:
-        json.dump(data, file, ensure_ascii=False, indent=4)
+    async with aiofiles.open(file_path, mode="w", encoding="utf-8") as file:
+        await file.write(json.dumps(data, ensure_ascii=False, indent=4))
 
 
 # Middleware 에서 token 발급
 class AuthMiddleware(BaseHTTPMiddleware):
-    """
-    post 일 경우, body의 user_name을 읽어야 하고
-    get 일 경우, param의 user_name을 읽어서 처리하자
-    """
-
     async def dispatch(self, request: Request, call_next):
         user_name = ""
         if request.method == "POST":
@@ -72,6 +70,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
             user_name = request_data.get("user_name", "")
 
         # log_data 함수 호출
+        print(f"user_name :{user_name}")
         await get_access_token(user_name)
 
         response = await call_next(request)
