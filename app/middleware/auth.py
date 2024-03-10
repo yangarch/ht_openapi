@@ -7,7 +7,7 @@ from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware
 
 
-async def get_access_token(request: Request, user_name=None):
+async def get_access_token(user_name=None):
     """
     read file and check date and renew
     """
@@ -17,13 +17,14 @@ async def get_access_token(request: Request, user_name=None):
         data = await file.read()
         data = json.loads(data)
 
-    acess_token_token_expired = data.get("acess_token_token_expired", "")
+    access_token_token_expired = data.get("access_token_token_expired", "")
     current_time = datetime.now()
+    expired_time = current_time
 
-    if acess_token_token_expired != "":
-        expired_time = datetime.strptime(acess_token_token_expired, "%Y-%m-%d %H:%M:%S")
+    if access_token_token_expired != "":
+        expired_time = datetime.strptime(access_token_token_expired, "%Y-%m-%d %H:%M:%S")
 
-    if expired_time < current_time or acess_token_token_expired == "":
+    if expired_time <= current_time or access_token_token_expired == "":
         await renew_accees_token(data)
 
 
