@@ -16,7 +16,7 @@ async def get_balance(user_name):
 
     headers = {
         "content-type": "application/json; charset=utf-8",
-        "authorization": data.get("access_token",""),
+        "Authorization": f'Bearer {data.get("access_token","")}',
         "appkey": data.get("appkey",""),
         "appsecret": data.get("appsecret",""),
         "tr_id":"TTTC8434R",
