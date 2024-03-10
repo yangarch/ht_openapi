@@ -4,6 +4,7 @@ services:
     container_name: openapi.yangarch.net
     volumes:
       - ./app:/app
+      - ./credentials:/credentials
     ports:
       - "19080:80"
     build: .
