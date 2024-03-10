@@ -56,6 +56,10 @@ async def renew_accees_token(data):
 # Middleware 에서 token 발급
 class AuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
+        if request.url.path.endswith("favicon.ico"):
+            # favicon.ico 요청이면, 미들웨어 로직을 건너뛰고 바로 다음으로 넘깁니다.
+            return await call_next(request)
+        
         user_name = ""
         if request.method == "POST":
             try:
