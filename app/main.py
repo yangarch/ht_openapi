@@ -1,9 +1,11 @@
 from typing import Union
-
+from middleware.auth import AuthMiddleware
 from fastapi import FastAPI, Request
 
 app = FastAPI()
 
+# add middleware
+app.add_middleware(AuthMiddleware)
 
 #main code
 @app.get("/")
@@ -18,3 +20,10 @@ def read_item(item_id: int, q: Union[str, None] = None):
 async def post_data(request: Request):
     ...
     return {request}
+
+
+"""
+ADD user API
+
+
+"""
