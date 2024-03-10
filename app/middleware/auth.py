@@ -42,7 +42,7 @@ async def renew_accees_token(data):
         async with session.post(url, data=json.dumps(body), timeout=300) as res:
             result = await res.json()
             access_token = result.get("access_token", "")
-            access_token_expired = result.get("access_token_expired", "")
+            access_token_expired = result.get("access_token_token_expired", "")
 
     data["access_token"] = access_token
     data["access_token_expired"] = access_token_expired
