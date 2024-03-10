@@ -8,13 +8,12 @@ async def get_balance(user_name):
     file_path = f"/credentials/{user_name}.json"  # JSON 파일 경로
     async with aiofiles.open(file_path, mode="r", encoding="utf-8") as file:
         data = await file.read()
-        data = json.loads(data)
 
     base_url = "https://openapi.koreainvestment.com:9443"
     path = "uapi/overseas-stock/v1/trading/inquire-balance"
     url = f"{base_url}/{path}"
 
-    header = {
+    headers = {
         "content-type": "application/json; charset=utf-8",
         "authorization": data.get("access_token",""),
         "appkey": data.get("appkey",""),
@@ -39,5 +38,5 @@ async def get_balance(user_name):
     }
 
     async with aiohttp.ClientSession() as session:
-        async with session.get(url, header=json.dumps(header), params=json.dumps(params), timeout=300) as res:
+        async with session.get(url, headers=json.dumps(headers), params=json.dumps(params), timeout=300) as res:
             return res.status

@@ -5,6 +5,7 @@ WORKDIR /app
 
 # 필요한 Python 모듈 설치
 COPY ./app /app
+COPY ./favicon.ico /favicon.ico
 
 # 패키지 목록 업데이트 및 Vim 설치
 RUN apt-get update && \
