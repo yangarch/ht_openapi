@@ -8,6 +8,7 @@ async def get_balance(user_name):
     file_path = f"/credentials/{user_name}.json"  # JSON 파일 경로
     async with aiofiles.open(file_path, mode="r", encoding="utf-8") as file:
         data = await file.read()
+        data = json.loads(data)
 
     base_url = "https://openapi.koreainvestment.com:9443"
     path = "uapi/overseas-stock/v1/trading/inquire-balance"
