@@ -17,14 +17,14 @@ async def get_access_token(user_name=None):
         data = await file.read()
         data = json.loads(data)
 
-    access_token_token_expired = data.get("access_token_token_expired", "")
+    access_token_expired = data.get("access_token_expired", "")
     current_time = datetime.now()
     expired_time = current_time
 
-    if access_token_token_expired != "":
-        expired_time = datetime.strptime(access_token_token_expired, "%Y-%m-%d %H:%M:%S")
+    if access_token_expired != "":
+        expired_time = datetime.strptime(access_token_expired, "%Y-%m-%d %H:%M:%S")
 
-    if expired_time <= current_time or access_token_token_expired == "":
+    if expired_time <= current_time or access_token_expired == "":
         await renew_accees_token(data)
 
 
@@ -32,8 +32,8 @@ async def renew_accees_token(data):
     user_name = data.get("user_name", "")
     appkey = data.get("appkey", "")
     appsecret = data.get("appsecret", "")
-    access_token = data.get("access_token_token", "")
-    access_token_token_expired = data.get("access_token_token_expired", "")
+    access_token = data.get("access_token", "")
+    access_token_expired = data.get("access_token_expired", "")
 
     url = "https://openapi.koreainvestment.com:9443/oauth2/tokenP"
     body = {"grant_type": "", "appkey": appkey, "appsecret": appsecret}
@@ -42,10 +42,10 @@ async def renew_accees_token(data):
         async with session.post(url, data=json.dumps(body), timeout=300) as res:
             result = await res.json()
             access_token = result.get("access_token", "")
-            access_token_token_expired = result.get("access_token_token_expired", "")
+            access_token_expired = result.get("access_token_expired", "")
 
     data["access_token"] = access_token
-    data["access_token_token_expired"] = access_token_token_expired
+    data["access_token_expired"] = access_token_expired
 
     # JSON 데이터를 새 파일로 덮어쓰기
     file_path = f"/credentials/{user_name}.json"  # 파일 경로 지정
