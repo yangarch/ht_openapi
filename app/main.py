@@ -19,7 +19,7 @@ async def get_data():
     return {"this is open-api.yangarch.net"}
 
 @app.get("/v1/{endpoint:path}")
-async def forward_api_request(endpoint: str, request: Request, user_name: str = Depends()):
+async def forward_api_request(endpoint: str, request: Request, user_name: str):
     # 인증은 미들웨어에서 처리되고 여기에서는 API 요청을 전달합니다.
     params = dict(request.query_params)
     params.pop('user_name', None)  # 원본 요청에서 user_name을 제거
