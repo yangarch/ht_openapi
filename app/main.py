@@ -2,7 +2,7 @@ from typing import Union
 from middleware.auth import AuthMiddleware
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse
-from scripts import balance
+from scripts import balance, trade
 
 from fastapi import FastAPI, Request, HTTPException, Depends
 from fastapi.responses import JSONResponse
@@ -18,7 +18,7 @@ app.add_middleware(AuthMiddleware)
 async def get_data():
     return {"this is open-api.yangarch.net"}
 
-@app.get("/v1/{endpoint:path}")
+@app.get("/v1/{endpoint:path}") # 미구현
 async def forward_api_request(endpoint: str, request: Request, user_name: str):
     # 인증은 미들웨어에서 처리되고 여기에서는 API 요청을 전달합니다.
     params = dict(request.query_params)
@@ -36,6 +36,11 @@ async def forward_api_request(endpoint: str, request: Request, user_name: str):
 @app.get("/balance")
 async def check_balance(user_name: str):
     result = await balance.get_balance(user_name)
+    return {"result": result}
+
+@app.get("/buy")
+async def buy(user_name: str, pdno, dvsn, qty, unpr):
+    result = await trade.buy(user_name, pdno, dvsn, qty, unpr)
     return {"result": result}
 
 @app.get("/items/{item_id}")
