@@ -35,5 +35,5 @@ async def buy(user_name, pdno, dvsn, qty, unpr):
     }
 
     async with aiohttp.ClientSession() as session:
-        async with session.get(url, headers=headers, params=params, timeout=300) as res:
+        async with session.post(url, headers=headers, body=params, timeout=300) as res:
             return await res.json()
