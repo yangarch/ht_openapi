@@ -39,7 +39,14 @@ async def check_balance(user_name: str):
     return {"result": result}
 
 @app.get("/buy")
-async def buy(user_name: str, pdno, dvsn, qty, unpr):
+async def buy(user_name: str, pdno: str, dvsn: str, qty: str, unpr: str):
+    print(f"call buy by {user_name}")
+    result = await trade.buy(user_name, pdno, dvsn, qty, unpr)
+    return {"result": result}
+
+@app.get("/sell")
+async def sell(user_name: str, pdno: str, dvsn: str, qty: str, unpr: str):
+    print(f"call sell by {user_name}")
     result = await trade.buy(user_name, pdno, dvsn, qty, unpr)
     return {"result": result}
 
