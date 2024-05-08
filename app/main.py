@@ -47,7 +47,7 @@ async def buy(user_name: str, pdno: str, dvsn: str, qty: str, unpr: str):
 @app.get("/sell")
 async def sell(user_name: str, pdno: str, dvsn: str, qty: str, unpr: str):
     print(f"call sell by {user_name}")
-    result = await trade.buy(user_name, pdno, dvsn, qty, unpr)
+    result = await trade.sell(user_name, pdno, dvsn, qty, unpr)
     return {"result": result}
 
 @app.get("/items/{item_id}")
