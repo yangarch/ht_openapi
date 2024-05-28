@@ -51,7 +51,7 @@ async def sell(user_name: str, pdno: str, dvsn: str, qty: str, unpr: str):
     return {"result": result}
 
 @app.get("/current_price")
-async def price(user_name: str, iscd: str):
+async def current_price(user_name: str, iscd: str):
     print(f"call price {user_name}")
     result = await price.current_price(user_name, iscd)
     return {"result": result}
