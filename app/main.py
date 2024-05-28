@@ -2,7 +2,7 @@ from typing import Union
 from middleware.auth import AuthMiddleware
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse
-from scripts import balance, trade
+from scripts import balance, trade, price
 
 from fastapi import FastAPI, Request, HTTPException, Depends
 from fastapi.responses import JSONResponse
@@ -48,6 +48,12 @@ async def buy(user_name: str, pdno: str, dvsn: str, qty: str, unpr: str):
 async def sell(user_name: str, pdno: str, dvsn: str, qty: str, unpr: str):
     print(f"call sell by {user_name}")
     result = await trade.sell(user_name, pdno, dvsn, qty, unpr)
+    return {"result": result}
+
+@app.get("/current_price")
+async def price(user_name: str, iscd: str):
+    print(f"call price {user_name}")
+    result = await price.current_price(user_name, iscd)
     return {"result": result}
 
 @app.get("/items/{item_id}")
