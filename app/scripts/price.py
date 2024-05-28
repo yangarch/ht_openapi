@@ -23,7 +23,7 @@ async def current_price(user_name, iscd):
 
     params = {
         "FID_COND_MRKT_DIV_CODE":"J",
-        "FID_INPUT_ISCD": iscd,#종목코드
+        "FID_INPUT_ISCD": str(iscd), #종목코드
     }
 
     async with aiohttp.ClientSession() as session:
