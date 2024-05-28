@@ -19,11 +19,12 @@ async def current_price(user_name, iscd):
         "appsecret": data.get("appsecret",""),
         "tr_id":"FHKST01010100",
         "custtype": "P",
+        "content-type": "application/json; charset=utf-8",
     }
 
     params = {
         "FID_COND_MRKT_DIV_CODE":"J",
-        "FID_INPUT_ISCD": str(iscd), #종목코드
+        "FID_INPUT_ISCD": iscd #종목코드
     }
 
     async with aiohttp.ClientSession() as session:
