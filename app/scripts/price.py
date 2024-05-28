@@ -28,5 +28,5 @@ async def current_price(user_name, iscd):
     }
 
     async with aiohttp.ClientSession() as session:
-        async with session.get(url, headers=headers, params=json.dumps(params), timeout=300) as res:
+        async with session.get(url, headers=headers, params=params, timeout=300) as res:
             return await res.json()
